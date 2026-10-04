@@ -12,7 +12,7 @@
 
 ## 📌 Overview
 
-**CogniChess Arena** is an experimental evaluation platform designed to pit **System-2 reasoning models** (Large Language Models such as OpenAI GPT-4o, Anthropic Claude 3.5/4.5, Google Gemini 2.5, DeepSeek, and Llama) against **System-1 reflexive neural or heuristic models** on the chessboard.
+**CogniChess Arena** is an experimental evaluation platform designed to pit **frontier reasoning models** (Flagship LLMs including OpenAI GPT-6 Luna, GPT-6.1 Sol, GPT-6 Sol, GPT-6 Astra, GPT-5.5, Anthropic Claude Sonnet 5.5, Claude Opus 5.5, and Claude Fable 5.1) against each other and against **System-1 reflexive neural or heuristic models** on the chessboard.
 
 Built with **FastAPI**, **LangGraph**, and **Next.js 14**, this arena provides real-time chess visualization, telemetry tracking (latency, token consumption, fallback rates, and exact match costs in USD), and audio feedback via Web Audio API.
 
@@ -34,12 +34,26 @@ Built with **FastAPI**, **LangGraph**, and **Next.js 14**, this arena provides r
   - Captured pieces tally and algebraic notation move history.
   - Adjustable match speed (100ms - 2000ms delay) and step-by-step move mode.
   - Native Web Audio synthesized sounds for moves, captures, and checks (zero external audio files).
-- 🌐 **Wide Model Coverage**:
-  - **OpenAI**: GPT-4o, GPT-4o mini, GPT-4.1 mini, GPT-5
-  - **Anthropic**: Claude Sonnet 4.5, Claude Opus 4.5, Claude Haiku 4.5
-  - **Google**: Gemini 2.5 Flash, Gemini 2.5 Pro
-  - **Open Models (via Euron Gateway)**: DeepSeek V3.2 / V4 Flash, Meta Llama 3.3 70B / 3.1 8B, Qwen QwQ 32B, Moonshot Kimi K3
-  - **System-1 Policy**: Built-in 1-ply tactical evaluator or external CLM/Jev policy endpoint.
+- 🌐 **Frontier Next-Gen Model Coverage**:
+  - **System-1 Intuition Policy**: **Jev** (Built-in 1-ply tactical evaluator or custom external CLM/Jev endpoint).
+  - **OpenAI Flagship**: GPT-6 Luna, GPT-6.1 Sol, GPT-6 Sol, GPT-6 Astra, GPT-5.5
+  - **Anthropic Flagship & Fable**: Claude Sonnet 5.5, Claude Opus 5.5, Claude Fable 5.1, Claude Opus 5, Claude Sonnet 5, Claude Fable 5, Claude Opus 4.8
+
+| Model | Provider | Model ID |
+|---|---|---|
+| **Jev** | System-1 | `system1` |
+| **GPT-6 Luna** | OpenAI | `gpt-6-luna` |
+| **GPT-6.1 Sol** | OpenAI | `gpt-6.1-sol` |
+| **GPT-6 Sol** | OpenAI | `gpt-6-sol` |
+| **GPT-6 Astra** | OpenAI | `gpt-6-astra` |
+| **GPT-5.5** | OpenAI | `gpt-5.5` |
+| **Claude Sonnet 5.5** | Anthropic | `claude-sonnet-5-5` |
+| **Claude Opus 5.5** | Anthropic | `claude-opus-5-5` |
+| **Claude Fable 5.1** | Anthropic | `claude-fable-5-1` |
+| **Claude Opus 5** | Anthropic | `claude-opus-5` |
+| **Claude Sonnet 5** | Anthropic | `claude-sonnet-5` |
+| **Claude Fable 5** | Anthropic | `anthropic/claude-fable-5` |
+| **Claude Opus 4.8** | Anthropic | `anthropic/claude-opus-4-8` |
 
 ---
 
@@ -117,7 +131,6 @@ Edit `.env` with your API keys (only configure the providers you plan to benchma
 ```env
 OPENAI_API_KEY=your_key_here
 ANTHROPIC_API_KEY=your_key_here
-GEMINI_API_KEY=your_key_here
 EURON_API_KEY=your_euron_key_here
 SYSTEM1_URL=       # Leave blank to use built-in simulated policy
 SYSTEM1_API_KEY=
@@ -174,8 +187,8 @@ You can easily register new models and configure pricing per 1M tokens by editin
 ```python
 MODELS = {
     # id -> (label, provider, api model name, $/1M input, $/1M output)
-    "gpt-4o-mini": ("OpenAI GPT-4o mini", "openai", "gpt-4o-mini", 0.15, 0.60),
-    "my-custom-model": ("Custom LLM", "euron", "custom-model-id", 0.20, 0.50),
+    "gpt-6-luna": ("OpenAI GPT-6 Luna", "openai", "gpt-6-luna", 0.10, 0.50),
+    "claude-sonnet-5-5": ("Anthropic Claude Sonnet 5.5", "anthropic", "claude-sonnet-5-5", 2.0, 10.0),
 }
 ```
 

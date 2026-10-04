@@ -98,7 +98,7 @@ function getCapturedPieces(fen) {
 
 export default function Page() {
   const [models, setModels] = useState([]);
-  const [players, setPlayers] = useState(["gpt-4o-mini", "system1"]);
+  const [players, setPlayers] = useState(["system1", "system1"]);
   const [fen, setFen] = useState(START);
   const [moves, setMoves] = useState([]);
   const [moveRecords, setMoveRecords] = useState([]);
@@ -110,7 +110,7 @@ export default function Page() {
   const [highlights, setHighlights] = useState([]);
   const [isCheck, setIsCheck] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(400); // ms delay between moves
+  const [speed, setSpeed] = useState(150); // ms delay between moves
   const [muted, setMuted] = useState(false);
   const [activeTab, setActiveTab] = useState("prompt");
 
@@ -124,16 +124,17 @@ export default function Page() {
     }
   }, [moves]);
 
-  // Load models from backend
+  // Load models from backend (keep Jev on top everywhere)
   useEffect(() => {
     fetch(`${API}/models`)
       .then((r) => r.json())
       .then((data) => {
-        setModels(data);
-        if (data.length >= 2) {
+        const sorted = [...data].sort((a, b) => (a.id === "system1" ? -1 : b.id === "system1" ? 1 : 0));
+        setModels(sorted);
+        if (sorted.length >= 2) {
           setPlayers((prev) => [
-            data.some((m) => m.id === prev[0]) ? prev[0] : data[1].id,
-            data.some((m) => m.id === prev[1]) ? prev[1] : data[0].id,
+            sorted.some((m) => m.id === prev[0]) ? prev[0] : "system1",
+            sorted.some((m) => m.id === prev[1]) ? prev[1] : "system1",
           ]);
         }
       })
@@ -356,19 +357,11 @@ export default function Page() {
                 setPlayers(players.map((p, idx) => (idx === sideIndex ? e.target.value : p)))
               }
             >
-              {models.map((m) => {
-                const priceBadge =
-                  m.pin !== undefined && m.pout !== undefined
-                    ? m.pin === 0 && m.pout === 0
-                      ? " (Free)"
-                      : ` ($${m.pin}/$${m.pout}/M)`
-                    : "";
-                return (
-                  <option key={m.id} value={m.id}>
-                    {m.label}{priceBadge}
-                  </option>
-                );
-              })}
+              {models.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -586,6 +579,7 @@ export default function Page() {
                 value={speed}
                 onChange={(e) => setSpeed(Number(e.target.value))}
               >
+                <option value={0}>⚡ Instant (0ms)</option>
                 <option value={150}>Fast (150ms)</option>
                 <option value={450}>Normal (450ms)</option>
                 <option value={1000}>Deliberate (1s)</option>

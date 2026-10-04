@@ -17,7 +17,7 @@ CogniChess Arena benchmarks **System-2 reasoning models** (Large Language Models
         ▼
 [ LangGraph State Machine ]
   ├── 1. build_state : FEN parser, legal move generator, context builder
-  ├── 2. call_model  : Provider router (OpenAI, Anthropic, Gemini, Euron, System-1)
+  ├── 2. call_model  : Provider router (OpenAI, Anthropic, Euron, System-1)
   └── 3. validate    : Legality validator via python-chess & fallback assigner
 ```
 
@@ -89,10 +89,11 @@ Models, providers, and per-token pricing are centrally managed in `MODELS` insid
 ```python
 MODELS = {
     # id -> (Display Label, Provider, API Model Identifier, $/1M Input Tokens, $/1M Output Tokens)
-    "system1": ("System-1 (Simulated / Jev)", "system1", "", 0.0, 0.0),
-    "gpt-4o-mini": ("OpenAI GPT-4o mini", "openai", "gpt-4o-mini", 0.15, 0.60),
-    "claude-sonnet-4-5": ("Anthropic Claude Sonnet 4.5", "anthropic", "claude-sonnet-4-5", 3.0, 15.0),
-    "deepseek-v3.2": ("DeepSeek V3.2", "euron", "deepseek-ai/DeepSeek-V3.2", 0.25, 0.50),
+    "system1": ("Jev", "system1", "", 0.0, 0.0),
+    "gpt-6-luna": ("OpenAI GPT-6 Luna", "openai", "gpt-6-luna", 0.10, 0.50),
+    "gpt-6.1-sol": ("OpenAI GPT-6.1 Sol", "openai", "gpt-6.1-sol", 2.0, 10.0),
+    "claude-sonnet-5-5": ("Anthropic Claude Sonnet 5.5", "anthropic", "claude-sonnet-5-5", 2.0, 10.0),
+    "claude-fable-5-1": ("Anthropic Claude Fable 5.1", "anthropic", "claude-fable-5-1", 10.0, 50.0),
 }
 ```
 
@@ -100,8 +101,7 @@ Supported provider identifiers:
 - `"system1"`: System-1 endpoint or local heuristic.
 - `"openai"`: Direct OpenAI API (`OPENAI_API_KEY`).
 - `"anthropic"`: Direct Anthropic API (`ANTHROPIC_API_KEY`).
-- `"gemini"`: Direct Google Gemini API (`GEMINI_API_KEY`).
-- `"euron"`: Euron / Euri AI Gateway (`EURON_API_KEY`) for open-source & multi-provider routing.
+- `"euron"`: Euron / Euri AI Gateway (`EURON_API_KEY`) for next-gen models & multi-provider routing.
 
 ---
 
